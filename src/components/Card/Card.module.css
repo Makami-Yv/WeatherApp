@@ -1,0 +1,72 @@
+.container {
+    width: 400px;
+    height: 250px;
+    background-color:rgb(216, 216, 216);
+    border-radius: 20px;
+    margin-top: 2rem;
+    box-shadow: 0 9px 18px 0 #333333, 0 8px 24px 0 #333333;
+}
+
+.city {
+    padding-top: 10px;
+}
+
+.city h1 {
+    font-size: 1.5em;
+}
+
+.city button {
+    position: absolute;
+    margin-left: 150px;
+    width: 35px;
+    height: 35px;
+    background-color:aliceblue;
+    border: none;
+    border-radius: 50%;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.city button:hover {
+    box-shadow: 0 14px 18px 0 #333333, 0 17px 50px 0 #333333;
+    cursor: pointer;
+}
+
+.actual {
+    font-weight: bold;
+    color: rgb(131, 131, 131);
+}
+
+.info {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    font-weight: bold;
+}
+
+.min {
+    color: rgb(14, 88, 88);
+}
+
+.max {
+    color: rgb(238, 27, 27);
+}
+
+.container:hover{
+    animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce{
+    20%,50%,80%, to{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-15px);
+    }
+    70%{
+        transform: translateY(-10px);
+    }
+    90%{
+        transform: translateY(-4px);
+    }
+}
