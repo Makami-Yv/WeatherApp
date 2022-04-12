@@ -7,7 +7,7 @@ export default function Card(props) {
   return <div className={styles.container}>
     <div className={styles.city}>
       <button onClick={props.onClose}>X</button>
-      <Link to={`/ciudad/${props.id}`}>
+      <Link to={`/weatherapp/ciudad/${props.id}`}>
         <h1>{props.name}</h1>
       </Link>
     </div>
