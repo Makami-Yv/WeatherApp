@@ -14,7 +14,10 @@
 .city h1 {
     font-size: 1.5em;
 }
-
+.city a {
+    text-decoration: none;
+    color:rgb(114, 49, 175);
+}
 .city button {
     position: absolute;
     margin-left: 150px;
@@ -28,7 +31,7 @@
 }
 
 .city button:hover {
-    box-shadow: 0 14px 18px 0 #333333, 0 17px 50px 0 #333333;
+    box-shadow: 0 14px 18px 0 #888888, 0 17px 50px 0 #888888;
     cursor: pointer;
 }
 
@@ -45,7 +48,7 @@
 }
 
 .min {
-    color: rgb(14, 88, 88);
+    color: rgb(12, 160, 160);
 }
 
 .max {

@@ -1,12 +1,15 @@
 import React from 'react';
-import styles from './Card.module.css'
+import styles from './Card.module.css';
+import {Link} from 'react-router-dom';
 
 export default function Card(props) {
   let img = 'http://openweathermap.org/img/wn/' + props.img + '@2x.png';
   return <div className={styles.container}>
     <div className={styles.city}>
       <button onClick={props.onClose}>X</button>
-      <h1>{props.name}</h1>
+      <Link to={`/ciudad/${props.id}`}>
+        <h1>{props.name}</h1>
+      </Link>
     </div>
     <div className={styles.actual}>
       <p>Temp. Actual:</p>

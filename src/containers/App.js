@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import './App.css';
 import Cards from '../components/Cards/Cards.jsx';
-import Nav from '../components/Nav/Nav';
+import Nav from '../components/Nav/Nav.jsx';
+import About from '../components/About/About.jsx'
+import {Route} from 'react-router-dom';
+import Ciudad from '../components/Ciudad/Ciudad';
 
 function App() {
   const [cities, setCities] = useState([]);
@@ -16,9 +19,13 @@ function App() {
             max: Math.round(informacion.main.temp_max),
             img: informacion.weather[0].icon,
             id: informacion.id,
+            wind: informacion.wind.speed,
             temp: informacion.main.temp,
             name: informacion.name,
-            weather: informacion.weather[0].main
+            weather: informacion.weather[0].main,
+            clouds: informacion.clouds.all,
+            latitud: informacion.coord.lat,
+            longitud: informacion.coord.lon
           }
           const ciudadEncontrada = cities.find(ciudad => ciudad.id === nuevaCiudad.id)
           if(ciudadEncontrada) return alert ('La ciudad ya está agregada.');
@@ -30,12 +37,28 @@ function App() {
     const ciudadFiltrada = cities.filter(ciudad => ciudad.id !== id)
     setCities(ciudadFiltrada)
   }
+  function onFilter(ciudadId) {
+    let ciudad = cities.filter(c => c.id === parseInt(ciudadId));
+    if(ciudad.length > 0) {
+      return ciudad[0];
+    } else return null;
+  }
   return (
     <div className="App">
-      <Nav onSearch={onSearch}/>
-      <div>
+      <Route
+        path='/'
+        render={() => <Nav onSearch={onSearch} />}
+      />
+      <Route 
+        path='/about'
+        component={About}
+      />
+      <Route exact path='/'>
         <Cards cities={cities} onClose={onClose}/>
-      </div>
+      </Route>
+      <Route exact path='/ciudad/:ciudadId'
+      render = {({match}) => <Ciudad city = 
+      {onFilter(match.params.ciudadId)}/>} />
     </div>
   );
 }

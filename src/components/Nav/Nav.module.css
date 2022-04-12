@@ -8,13 +8,18 @@
     background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
 }
 
-.navigation h1 {
+.navigation a {
     font-size: 2rem;
+    font-weight: bolder;
+    text-decoration:  none;
+    text-align: center;
+    color:rgb(114, 49, 175);
 }
 
 .logo {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
 }
 .logo img {

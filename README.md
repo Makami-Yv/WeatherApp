@@ -1,227 +1,247 @@
 ## Henry Weather
 
+### Instrucciones para correr el proyecto
+
+Desde la carpeta "homework" se pueden ejecutar los siguientes comandos:
+
+1. `npm install`: Instala todas las dependencias necesarias para correr el proyecto correctamente. [Es necesario correrlo sólo la primera vez]
+
+2. `npm start`: Comienza a correr la aplicación de forma local por lo que se puede ver desde el navegador accediendo a http://localhost:3000
+
+No es necesario volver a correr el proyecto cada vez que se realice un cambio sino que se verá automáticamente reflejando en el navegador.
+
+> Hay veces que por problemas de configuración los cambios no se ven automáticamente reflejados en el navegador por lo que si te ocurre esto la opción rápida sería parar la ejecición del proyecto (Ctrl + C) y volver a ejecutar `npm start`. De todas formas si te ocurre esto contactate con tu PM.
 
 ### Ejercitación
 
-En este `homework` vamos a utilizar `react-router` para poder tener más de una ruta en nuestra **SPA**.
+1. Ya se encuentran copiados los componentes creados en el ejercicio anterior dentro de la carpeta `components`. En el caso de que quieran utilizar los que hicieron ustedes, copiar todos los archivos que se encuentren en la carpeta `components` del ejercicio `07-React-Estilos` a la carpeta `components` pero del ejercicio `08-React-Estado-LifeCycle` sobreescribiendo los que ya se encuentran allí.
 
-Vamos a utilizar el código que hicimos en el `homework` anterior. Si no lo terminaste, no te preocupes, en `src` dejamos todo el código para tener el proyecto funcionando.
+  * Card.jsx
+  * Cards.jsx
+  * SearchBar.jsx
 
-Cuando terminemos este `homework`, vamos a tener tres rutas que podremos navegar:
- - **"/"**: El home, acá vamos a ver lo mismo que veiamos.
- - **"/ciudad/{ciudadId}/"**: en esta ruta, vamos a tener información más detallada sobre el clima de una ciudad en particular, notese que usamos el ID de una ciudad para identificarla y no el nombre.
- - **"/about"**: Tu oportunidad de poner tu nombre y explicar un poco de que va la `weatherApp`.
+2. Adicionalmente a los componentes que ya teníamos vamos a tener que crear otro denominado `Nav` que va a ser nuestra barra superior de navegación en la cual debemos incluir el componente `SearchBar`. Escribir el código correspondiente en `components/Nav.jsx`. Pueden utilizar como base los [navbars ya definidos de Bootstrap](https://getbootstrap.com/docs/4.4/components/navbar/). El resultado debería ser similar a lo siguiente:
 
+<p align="center">
+  <img src="./img-screen/nav.png" alt="Gif" />
+</p>
 
-#### Comenzamos el Enrutado de nuestra aplicacion.
+* __Recuadro rojo__: Nav
+* __Recuadro verde__: SearchBar
 
-Vamos a Comenzar creando los componentes que nos faltan en nuestra carpeta componentes. Creamos `About.jsx` y `Ciudad.jsx` con sus respectivos archivos `.css` para el estilado dentro de la carpeta `components`.
+Ahora que ya tenemos cada una de las partes de nuestra aplicación procedamos a unirlas. Para ello veamos una imagen del resultado final y pensemos la estrucutra general:
 
-#### Rutas Dinámicas
+<p align="center">
+  <img src="./img-screen/componentes.png" alt="Gif" />
+</p>
 
-Cómo sabemos, `react-router` nos da la posibilidad de crear rutas dinámicas, y podemos decidir qué Componentes queremos que aparezcan en qué rutas.
-Para nuestro ejercicio nosotros queremos ver lo siguiente:
+  * __Recuadro rojo__: Nav
+  * __Recuadro amarillo__: SearchBar
+  * __Recuadro verde__: Cards
+  * __Recuadro azul__: Card
 
-- `<Nav />` tiene que aparecer en todas las rutas.
-- `<Cards />` debe aparecer sólo en la ruta `/`.
-- `<About />` debe aparecer sólo la ruta `/about`.
-- `<Cuidad />` debe aparecer sólo en la ruta `/ciudad/{ciudadId}`
+3. Dentro del archivo `App.js` cambiar el contenido que se esta renderizando actualmente `<h1>Título</h1>` por los componentes que deberíamos  mostrar. Recordar que cada una de las tarjetas del clima (`Card`) están incluidas dentro de un componente superior (`Cards`) y que el `SearchBar` se encuentra dentro del `Nav` por lo que solo deberíamos agregar acá los componentes `Nav` y `Cards`.
 
-#### Importamos React-Router
-
-Vamos a tener que instalar `react-router-dom`. Para eso hacemos:
-
-```shell
-npm install --save react-router-dom
-```
-Cómo sabemos, lo primero que necesitamos es elegir un Wrapper.
-
-Para ello debemos importar `BrowserRouter` del paquete recién agregado `react-router-dom`:
-
-```js
-// index.js
-...
-import { BrowserRouter } from 'react-router-dom';
-...
-```
-
-Luego vamos a usar `<BrowserRouter/> `, por lo tanto, debemos envolver toda nuestra applicación con este Componente:
-
-```js
-// index.js
-
-...
-
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById('root')
-);
-```
-#### Modificando el NavBar
-
-Ahora que ya hemos preparado nuestra App para usar router, vamos a agregar los links necesarios en nuestro `<Nav />`. Para ello notar que es necesario primero importar `Link` desde `react-router-dom`. (Recordar de importar el componente About para poder utilizarlo)
-
-```js
-//Nav.js
-import { Link } from 'react-router-dom';
-
-function Nav({onSearch}) {
-  return (
-    <nav className="navbar navbar-dark bg-dark">
-      <Link to='/'>
-        <span className="navbar-brand">
-          <img id="logoHenry" src={Logo} width="30" height="30" className="d-inline-block align-top" alt="" />
-          Henry - Weather App
-        </span>
-      </Link>
-      <Link to='/about'>
-        <span>About</span>
-      </Link>
-        <SearchBar
-          onSearch={onSearch}
-        />
-    </nav>
-  );
-};
-```
-
-#### <Route />
-
-Vamos a agregar los Componentes necesarios para poder mostrar `<About />` cuando naveguemos a `/about`. Ahora vamos a tener que hacer uso del componente `Route`.
-
-Si vemos nuestra app, vamos a notar que ahora siempre se está renderizando el componente `<Nav />` y `<Cards />`.
+  * Importar los componentes que vamos a utilizar
+  * Agregarlos dentro del método render
 
 ```js
 // App.js
 ...
-return (
-    <div className="App">
-      <Nav onSearch={onSearch}/>
-      <div>
-        <Cards
-          cities={cities}
-          onClose={onClose}
-        />
+
+//Importar
+import Nav from './components/Nav.jsx';
+import Cards from './components/Cards.jsx';
+
+...
+      //Renderizar componentes
+      <div className="App">
+        <Nav />
+        <Cards />
       </div>
-      <hr />
-    </div>
-  );
+...
+
 ```
 
-Esté lugar sería la raíz del árbol de Componentes, por lo tanto, acá tenemos que agregar nuestras Rutas. En primer lugar debemos importar Route de `react-router-dom` para luego poder utilizarlo:
+Inicialmente si nuestro componente Cards no está recibiendo datos de ciudades la aplicación se vería de la siguiente forma (Pueden si quieren al igual que realizamos en el ejercicio anterior importar los datos de ejemplo `data.js` y pasárselos como parámetro para verificar su funcionamiento):
+
+<p align="center">
+  <img src="./img-screen/barra-busqueda.png" alt="Gif" />
+</p>
+
+*Observen que dentro del componente Cards se está verificando si está recibiendo las cities como prop o no, en el caso de que no las reciba devuelve un mensaje avisando para evitar que surja un error al intentar realizar el map sobre el array vacio*
+
+4. Utilizar el archivo `App.js` para mantener actualizado el listado de ciudades a mostrar. Para ello debemos crearle un estado a este componente donde tengamos el array de ciudades:
 
 ```js
 // App.js
 ...
-<Route
-    path='/'
-    render={() => <Nav onSearch={onSearch} />}
-/>
-<Route
-    path='/about'
-    component={About}
-/>
+
+//Modificar esta línea para poder manejar el estado
+import React, { useState } from 'react'; //Se agregó el { useState }
+
 ...
+
+function App() {
+  const [cities, setCities] = useState([]);
+
+  ...
+
+}
+
+export default App;
 ```
 
-> ¿Por qué usamos la prop `render` para invocar al Componente? Necesitamos hacer esto porque tenemos que pasar props a `<Nav />`. Cuando invocamos a `<About />` (que no lleva props) no ocurre lo mismo. Si quieren entender más del proqué pueden leer [este post](https://tylermcginnis.com/react-router-pass-props-to-components/).
-
-Ahora vos tenes que cambiar el código para envolver `Cards` con un Componente `<Route />`. Fijate que Cards recibe props!
-
-
-#### Links a cada Ciudad
-
-Bien, si llegaste hasta acá, ya tenemos una SPA con dos links, el home y about, funcionales!
-
-Ahora tenemos que pensar cómo agregar una ruta nueva para cada ciudad:
-
-```
-/ciudad/{ciudadId}
-```
-
-Vamos a necesitar dos cosas, la primera es tener un link en cada `<Card />` que nos lleve a la url de su cuidad.
-
-Vamos a poner ese Link en el título de cada Card (Recuerden de importar Link desde `react-router-dom`):
+5. Ahora debemos crear una función para agregar nuevas ciudades a nuestro estado `cities` y se la pasaremos al `SearchBar` mediante el `Nav`.
 
 ```js
-// Card.js
+// App.js
+
 ...
-<Link to={`/ciudad/${id}`} >
-  <h5 className="card-title">{name}</h5>
-</Link>
-...
+
+function App() {
+
+  ...
+
+  function onSearch(ciudad) {
+    //Acá habría que hacer el llamado a la API para obtener los datos de la ciudad
+    //pero de momento agregaremos una ciudad por default para ver que funcione
+
+    const ciudadEjemplo = {
+      min: 32,
+      max: 35,
+      img: "03n",
+      id: 2172797,
+      wind: 3.6,
+      temp: 300.15,
+      name: "Cairns",
+      weather: "Clouds",
+      clouds: 40,
+      latitud: -16.92,
+      longitud: 145.77
+    };
+    setCities(oldCities => [...oldCities, ciudadEjemplo]);
+  }
+
+}
+
+export default App;
 ```
 
-Bien, ahora necesitamos una prop más! necesitamos el `id` de cada ciudad.
-Ahora tenes que pasarle ese prop al Componente Card. El Compontente que invoca a `Card` es `<Cards />`. Agrega una nueva prop y pasale el id de cada ciudad.
-
-
-#### Ciudad
-
-Bien, ya tenemos la ruta, ahora necesitamos un componente nuevo donde mostrar la info más detallada de la ciudad.
-
-Para eso vamos a usar el Componente `Ciudad`:
+6. Pasarle la función recién creada al `Nav`.
 
 ```js
-import React from "react";
+// App.js
+...
+        <Nav onSearch={onSearch}/>
+...
 
-export default function Ciudad({city}) {
-    return (
-        <div className="ciudad">
-                <div className="container">
-                    <h2>{city.name}</h2>
-                    <div className="info">
-                        <div>Temperatura: {city.temp} ºC</div>
-                        <div>Clima: {city.weather}</div>
-                        <div>Viento: {city.wind} km/h</div>
-                        <div>Cantidad de nubes: {city.clouds}</div>
-                        <div>Latitud: {city.latitud}º</div>
-                        <div>Longitud: {city.longitud}º</div>
-                    </div>
-            </div>
-        </div>
-    )
+```
+
+7. Quien finalmente debe ejecutar la función `onSearch` no es el `Nav` sino el `SearchBar` por lo que debemos hacerle llegar dicha función.
+
+```js
+// Nav.jsx
+...
+        <SearchBar onSearch={onSearch}/>
+...
+
+```
+
+8. En este punto ya la función debería ejecutarse ya que en el ejercicio anterior ya habíamos creado el componente `SearchBar` que recibía la función como parámetro y la ejecutaba cuando se hacía un `submit` del form.
+
+```js
+//SearchBar.jsx
+
+export default function SearchBar({onSearch}) {
+  return (
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      onSearch("Cairns");
+    }}>
+      <input
+        type="text"
+        placeholder="Ciudad..."
+      />
+      <input type="submit" value="Agregar" />
+    </form>
+  );
 }
 ```
 
-Bien, ahora si nos fijamos cuando entren a esa ruta, vamos a tener una url como: `http://localhost:3000/ciudad/3435910`
+Si observamos el código anterior estamos llamando a la función `onSearch` con un parámetro ya fijo pero quisiéramos que ese parámetro dependa del input ingresado por el usuario.
 
-Vamos a tener que extraer la última porción de la url como un parámetro. Por suerte, la gente que desarrolló React Router ya pensó en eso.
+9. Modificar el componente `SearchBar` para que mantenga un estado interno del nombre de la ciudad (`city`) escrita por el usuario y que cuando haya un cambio en el input lo detecte mediante el listener `onChange` y actualice dicho estado. Adicionalmente cambiar el parámetro de la funcion `onSearch` para que utilice el estado `city` en vez del valor fijo que tenía hasta ahora (Si ya habían realizado esto en el ejercicio anterior, saltear este paso)
 
-Ellos nos pasan un objeto llamado `match` en Route. Usando Match podemos obtener los parametros que haya definido en la URL.
-En este caso: `path='/ciudad/:ciudadId'`, como agregamos los dos puntos en `ciudadId`, react route nos lo va a parsear por nosotros y nos dejará ese valor en (Recordar importar el componente Ciudad para poder utilizarlo):
+Llegado a este punto cada vez que le den click al botón de `Agregar` se debe incluir una nueva tarjeta con los datos que seteamos para la ciudad de `Cairns`
 
-```
-match.params.ciudadId
-```
+10. Modificar la función `onSearch` para que obtenga los datos necesarios desde la API de [openweather](https://openweathermap.org/current). Para ello pueden utilizar `fetch` para hacer la llamada y obtener el resultado. En el caso de que la ciudad no exista deberíamos mostrar un mensaje indicándolo.
 
-```js
-<Route
-    exact
-    path='/ciudad/:ciudadId'
-    render={({match}) => <Ciudad
-          city={...}
-        />}
-  />
-```
+__IMPORTANTE__: Para poder realizar las llamadas a la API es necesario contar con una apiKey  que como verán en el código debajo debe ser incluida dentro de la URL. La misma la podemos obtener creando una cuenta en la paǵina de [openweather](https://openweathermap.org/current). Sino consultar con sus PMs si tienen ya una apiKey para darles y que puedan evitar realizar este paso.
 
-Por último, tenemos que pasarle los datos de la ciudad (que ya tenemos) al componente Ciudad. ¿Cómo podemos hacer eso?
-
-Ya tenemos una lista de ciudad, por lo tanto, podemos usar el ciudadId del parámetro para filtrar la ciudad que queremos.
+*Pueden utilizar sino la siguiente apiKey: '4ae2636d8dfbdc3044bede63951a019b'*
 
 ```js
-cities.filter(c => c.id === parseInt(match.params.ciudadId))
+// App.js
+
+  ...
+
+  function onSearch(ciudad) {
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric`)
+      .then(r => r.json())
+      .then((recurso) => {
+        if(recurso.main !== undefined){
+          const ciudad = {
+            min: Math.round(recurso.main.temp_min),
+            max: Math.round(recurso.main.temp_max),
+            img: recurso.weather[0].icon,
+            id: recurso.id,
+            wind: recurso.wind.speed,
+            temp: recurso.main.temp,
+            name: recurso.name,
+            weather: recurso.weather[0].main,
+            clouds: recurso.clouds.all,
+            latitud: recurso.coord.lat,
+            longitud: recurso.coord.lon
+          };
+          setCities(oldCities => [...oldCities, ciudad]);
+        } else {
+          alert("Ciudad no encontrada");
+        }
+      });
+
+    }
+
+...
+
 ```
 
-El filter nos devuelve un arreglo, que puede tener uno o cero elementos. Por lo tanto, van a tener que modificar `Ciudad.jsx` controlar esto. Si hay un elemento, voy a ponerlo en `ciudad`. Y si cero, debería mostrar una leyenda que diga: "Esta ciudad no se encuentra en la lista".
-
-*Pueden utilizar la función onFilter que se encuentra ya definida en el archivo App.js*
+11. Por último en el ejercicio anterior habíamos creado el componente `Card` para que reciba una función como parámetro. Esta va a ser la encargada de eliminarla al momento de hacer click en el botón `X`. Para ello es necesario definir dicha función en `App.js` para que a partir del id recibido, elimina dicha cudad del array de ciudades del estado.
 
 ```js
-<Route
-  exact path='/ciudad/:ciudadId'
-  render={({match}) => <Ciudad city={onFilter(match.params.ciudadId)}/>}
-/>
+// App.js
+
+  ...
+
+  function App() {
+
+    ...
+
+    function onClose(id) {
+      setCities(oldCities => oldCities.filter(c => c.id != id));
+    }
+
+    ...
+
 ```
+Muestra final de la aplicación funcionando:
+
+<p align="center">
+  <img src="./img-screen/agregar-ciudad.gif" alt="Gif" />
+</p>
+
+<p align="center">
+  <img src="./img-screen/borrar-ciudad.gif" alt="Gif" />
+</p>
+
+![Alt](./img-screen/tarjetas-iconos.png)
