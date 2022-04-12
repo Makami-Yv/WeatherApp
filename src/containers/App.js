@@ -53,7 +53,7 @@ function App() {
         path='/weatherapp/about'
         component={About}
       />
-      <Route exact path='/'>
+      <Route exact path='/weatherapp/'>
         <Cards cities={cities} onClose={onClose}/>
       </Route>
       <Route exact path='/weatherapp/ciudad/:ciudadId'
